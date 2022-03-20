@@ -1,0 +1,67 @@
+@use "../../sass/abstract/index" as *;
+
+.container {
+  background: color(very-light-gray);
+  border-radius: 10px;
+
+  padding: 0.6rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 100px;
+}
+
+.container button {
+  cursor: pointer;
+  border: none;
+  color: color(light-grayish-blue);
+  background: none;
+  font-weight: 500;
+  font-size: 1rem;
+  transition: all 0.1s ease;
+  transform-origin: center;
+
+  &:hover,
+  &:active,
+  &:focus-visible {
+    color: color(moderate-blue);
+    transform: scale(1.2);
+  }
+}
+
+.number {
+  color: color(moderate-blue);
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+@media (min-width: 660px) {
+  .container {
+    width: 40px;
+  }
+}
+
+.voted-up {
+  .number {
+    font-weight: 700;
+  }
+
+  .plus {
+    color: color(moderate-blue);
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+}
+
+.voted-down {
+  .number {
+    font-size: 0.9rem;
+    color: color(soft-Red);
+  }
+
+  .minus {
+    color: color(soft-Red);
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+}

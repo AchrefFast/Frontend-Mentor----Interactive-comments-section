@@ -1,0 +1,158 @@
+@use "../../sass/abstract/index" as *;
+
+.comment-block {
+  margin: auto;
+  padding: 0;
+  max-width: 730px;
+  margin-bottom: 1.2rem;
+
+  & > .subcomment-block {
+    margin-top: 1.2rem;
+    padding-left: 15px;
+    margin-left: 0px;
+    position: relative;
+    @media (min-width: 660px) {
+      padding-left: 40px;
+      margin-left: 40px;
+    }
+    &:before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: -20px;
+      left: 0px;
+      width: 2px;
+      background: color(light-gray);
+    }
+    &:last-child {
+      &:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0px;
+        left: 0px;
+        width: 2px;
+        background: color(light-gray);
+      }
+    }
+  }
+}
+
+.subcomment-block {
+  margin-block: 1rem;
+}
+
+.subcomments {
+  margin-left: 20px;
+}
+
+.comment {
+  border: 10px;
+  padding: 1.5rem;
+  background: white;
+  font-size: 1rem;
+  display: grid;
+  grid-template-areas: "body body" "rating reply";
+  row-gap: 1.2rem;
+  border-radius: 12px;
+}
+
+.body {
+  grid-area: body;
+}
+
+.header {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 0.5rem;
+
+  .title {
+    display: flex;
+    flex-wrap: wrap;
+
+    span {
+      display: block;
+      background: color(moderate-blue);
+      color: white;
+      line-height: 1.1;
+      padding-inline: 0.3rem;
+      font-size: 0.9rem;
+      margin-left: 5px;
+    }
+  }
+
+  img {
+    width: 32px;
+    height: 32px;
+  }
+
+  .username {
+    font-weight: 500;
+    margin: 0 0 0 15px;
+    font-size: 0.9rem;
+
+    @media (min-width: 660px) {
+      font-size: 1rem;
+    }
+  }
+
+  .timestamp {
+    color: color(grayish-Blue);
+    margin: 0 0 0 15px;
+    font-size: 0.9rem;
+    text-align: center;
+
+    @media (min-width: 660px) {
+      font-size: 1rem;
+    }
+  }
+}
+
+.content {
+  color: color(grayish-Blue);
+  line-height: 1.6;
+  font-size: 1rem;
+
+  a {
+    font-weight: 500;
+    text-decoration: none;
+  }
+}
+
+.rating {
+  grid-area: rating;
+}
+
+.reply-button {
+  grid-area: reply;
+  justify-self: end;
+  display: flex;
+  column-gap: 1rem;
+}
+
+@media (min-width: 660px) {
+  .comment {
+    grid-template-areas: none;
+    grid-template-columns: min-content auto auto;
+    grid-template-rows: 32px auto;
+    column-gap: 1.5rem;
+  }
+  .body {
+    grid-row: 1 / -1;
+    grid-column: 2 / -1;
+  }
+  .rating {
+    flex-direction: column;
+    max-height: 110px;
+    grid-row: 1 / -1;
+    grid-column: 1 / 2;
+    height: 100px;
+  }
+
+  .reply-button {
+    grid-row: 1 / 2;
+    grid-column: 3 / -1;
+    align-self: center;
+  }
+}

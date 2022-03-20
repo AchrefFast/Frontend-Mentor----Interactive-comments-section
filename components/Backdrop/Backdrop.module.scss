@@ -1,0 +1,72 @@
+@use "../../sass/abstract/index" as *;
+
+.container {
+  position: fixed;
+  min-height: 100vh;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.65);
+  padding: 1rem;
+
+  h2 {
+    font-weight: 500;
+    color: color(dark-blue);
+    margin-top: 0.5rem;
+    padding-top: 0;
+  }
+
+  p {
+    color: color(grayish-Blue);
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+  }
+}
+
+.box {
+  background: white;
+  padding: 1.8rem 2rem;
+  width: 100%;
+  max-width: 400px;
+  border-radius: 12px;
+}
+
+.buttons {
+  display: flex;
+  column-gap: 10px;
+  button {
+    cursor: pointer;
+    color: white;
+    padding: 1rem 2rem;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 10px;
+    flex-basis: 100%;
+    font-size: 1rem;
+    font-weight: 500;
+    @media (max-width: 480px) {
+      font-size: 0.7rem;
+    }
+  }
+  .cancel {
+    background: color(grayish-Blue);
+    &:hover,
+    &:active,
+    &:focus-visible {
+      background: color(light-grayish-blue);
+    }
+  }
+
+  .delete {
+    background: color(soft-Red);
+    &:hover,
+    &:active,
+    &:focus-visible {
+      background: color(pale-red);
+    }
+  }
+}

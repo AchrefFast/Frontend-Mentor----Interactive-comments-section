@@ -1,0 +1,49 @@
+@use "../../sass/abstract/index" as *;
+
+.form {
+  textarea {
+    outline: none;
+    width: 100%;
+    padding: 1rem;
+    border: none;
+    border-radius: 12px;
+    border: 1px solid rgba(107, 107, 107, 0.294);
+    resize: none;
+
+    &::placeholder {
+      font-size: 1rem;
+    }
+
+    &:active,
+    &:focus-visible {
+      border-color: black;
+    }
+  }
+
+  button {
+    margin-top: 1rem;
+    display: block;
+    float: right;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    text-transform: uppercase;
+    padding: 0.7rem 1.2rem;
+    font-size: 1rem;
+    background: color(moderate-blue);
+    color: white;
+    &:hover,
+    &:active,
+    &:focus-visible {
+      background: color(light-grayish-blue);
+    }
+  }
+}
+
+@media (max-width: 420px) {
+  .form {
+    button {
+      font-size: 0.8rem;
+    }
+  }
+}

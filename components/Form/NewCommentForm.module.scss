@@ -1,0 +1,108 @@
+@use "../../sass/abstract/index" as *;
+
+.form {
+  padding: 1.5rem;
+  background: white;
+  display: grid;
+  row-gap: 1rem;
+  grid-template-columns: min-content auto min-content;
+  grid-template-rows: auto auto;
+  align-items: start;
+  grid-template-areas: "text text text" "avatar . button";
+  width: 100%;
+  max-width: 730px;
+  border-radius: 12px;
+  margin: 1rem auto 0 auto;
+
+  textarea {
+    outline: none;
+    grid-area: text;
+    width: 100%;
+    padding: 0.5rem 1.5rem;
+    border: none;
+    border-radius: 7px;
+    border: 1px solid rgba(107, 107, 107, 0.226);
+    resize: none;
+
+    &::placeholder {
+      font-family: "Rubik", Arial, Verdana, sans-serif;
+      opacity: 1;
+      color: color(grayish-Blue);
+      font-size: 1rem;
+    }
+    &::-ms-input-placeholder {
+      font-family: "Rubik", Arial, Verdana, sans-serif;
+      opacity: 1;
+      color: color(grayish-Blue);
+      font-size: 1rem;
+    }
+
+    &:active,
+    &:focus-visible {
+      border-color: black;
+    }
+  }
+
+  div {
+    grid-area: button;
+    display: flex;
+    column-gap: 0.5rem;
+  }
+
+  button {
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    text-transform: uppercase;
+    padding: 0.85rem 2rem;
+    font-size: 1rem;
+    background: color(moderate-blue);
+    color: white;
+    &:hover,
+    &:active,
+    &:focus-visible {
+      background: color(light-grayish-blue);
+    }
+  }
+
+  .cancel {
+    background: color(soft-Red);
+
+    &:hover,
+    &:active,
+    &:focus-visible {
+      background: color(pale-red);
+    }
+  }
+
+  img {
+    grid-area: avatar;
+    width: 40px;
+    height: 40px;
+    margin-top: 5px;
+  }
+}
+
+@media (min-width: 660px) {
+  .form {
+    grid-template-areas: "avatar text button";
+    column-gap: 1rem;
+    row-gap: 0;
+
+    div {
+      flex-direction: column;
+      row-gap: 0.5rem;
+    }
+  }
+}
+
+@media (max-width: 420px) {
+  .form {
+    padding: 1.2rem;
+
+    button {
+      font-size: 0.8rem;
+      padding: 0.7rem 1.2rem;
+    }
+  }
+}

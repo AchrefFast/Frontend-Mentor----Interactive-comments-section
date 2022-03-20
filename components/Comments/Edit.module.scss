@@ -1,0 +1,32 @@
+@use "../../sass/abstract/index" as *;
+
+.edit {
+  cursor: pointer;
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: fit-content;
+
+  &:hover,
+  &:active,
+  &:focus-visible {
+    span {
+      color: color(light-grayish-blue);
+      transition: all 0.15s ease-in;
+    }
+
+    .image {
+      fill: color(light-grayish-blue);
+      transition: all 0.15s ease-in;
+    }
+  }
+
+  span {
+    color: color(moderate-blue);
+    font-size: 1rem;
+    font-weight: 500;
+    margin-left: 5px;
+  }
+}
