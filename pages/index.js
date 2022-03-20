@@ -42,7 +42,9 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
         <title>Comments Section</title>
       </Head>
-      <h1 className={classes.h1}>Comments Section</h1>
+      <header>
+        <h1 className={classes.h1}>Comments Section</h1>
+      </header>
       <main>
         {content}
         <NewCommentForm
