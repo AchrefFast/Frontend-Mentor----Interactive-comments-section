@@ -1,6 +1,6 @@
 import classes from "./Backdrop.module.scss";
 import { createPortal } from "react-dom";
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 const Backdrop = (props) => {
     return (
@@ -8,15 +8,15 @@ const Backdrop = (props) => {
             <div className={classes.box}>
                 <h2>Delete Comment</h2>
                 <p>
-                    Are you sure you want to delete this comment? This will remove the
-                    comment and can't be undone.
+                    {`Are you sure you want to delete this comment? This will remove the
+                    comment and can't be undone.`}
                 </p>
                 <div className={classes.buttons}>
                     <button className={classes.cancel} onClick={props.onCancel}>
-                        No, Cancel
+                        {`No, Cancel`}
                     </button>
                     <button className={classes.delete} onClick={props.onDelete}>
-                        Yes, Delete
+                        {`Yes, Delete`}
                     </button>
                 </div>
             </div>
@@ -34,7 +34,10 @@ const Overlay = (props) => {
     }, []);
 
     return mounted
-        ? createPortal(<Backdrop onCancel={props.onCancel} onDelete={props.onDelete} />, document.querySelector("#myportal"))
+        ? createPortal(
+            <Backdrop onCancel={props.onCancel} onDelete={props.onDelete} />,
+            document.querySelector("#myportal")
+        )
         : null;
 };
 
