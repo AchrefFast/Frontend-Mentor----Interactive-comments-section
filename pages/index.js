@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { useState, Fragment, useContext } from "react";
-import CommentItem from "../components/Comments/commentItem.js";
+import CommentItem from "../components/Comments/CommentItem.js";
 import NewCommentForm from "../components/Form/NewCommentForm.js";
 import AppContext from "../components/store/app-context.js";
 import classes from "../styles/main.module.scss";
