@@ -29,7 +29,7 @@ const NewCommentForm = (props) => {
             <picture>
                 <source type="image/webp" srcSet={props.image.webp} />
                 <source type="image/png" srcSet={props.image.png} />
-                <img src="/anonymous.png" />
+                <img src="/anonymous.png" alt='user avatar' />
             </picture>
             <textarea
                 required={true}

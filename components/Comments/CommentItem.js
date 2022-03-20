@@ -127,7 +127,7 @@ const CommentItem = (props) => {
                         <picture>
                             <source type="image/webp" srcSet={props.image.webp} />
                             <source type="image/png" srcSet={props.image.png} />
-                            <img src="/anonymous.png" />
+                            <img src="/anonymous.png" alt="user Avatar" />
                         </picture>
                         <div className={classes.title}>
                             <div className={classes.username}>{props.userName}</div>

@@ -7,14 +7,7 @@ import classes from "../styles/main.module.scss";
 
 export default function Home() {
   const appContext = useContext(AppContext);
-  const {
-    currentUser,
-    comments,
-    isLoading,
-    error,
-    addComment,
-  } = appContext;
-
+  const { currentUser, comments, isLoading, error, addComment } = appContext;
 
   let content = comments.map((comment) => (
     <CommentItem
@@ -49,16 +42,19 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
         <title>Comments Section</title>
       </Head>
-      {content}
-      <NewCommentForm
-        type="Send"
-        image={{
-          png: currentUser.image.png,
-          webp: currentUser.image.png,
-        }}
-        placeholder="Add a comment..."
-        onSubmit={addComment}
-      />
+      <h1 className={classes.h1}>Comments Section</h1>
+      <main>
+        {content}
+        <NewCommentForm
+          type="Send"
+          image={{
+            png: currentUser.image.png,
+            webp: currentUser.image.png,
+          }}
+          placeholder="Add a comment..."
+          onSubmit={addComment}
+        />
+      </main>
     </Fragment>
   );
 }
