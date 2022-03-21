@@ -4,12 +4,13 @@ import Delete from "./Delete";
 import Edit from "./Edit";
 import Rating from "./Rating";
 import Reply from "./Reply";
-import { Fragment, useContext, useState } from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 import TimeAgo from "javascript-time-ago";
 import en from "javascript-time-ago/locale/en.json";
 import AppContext from "../store/app-context";
 import Overlay from "../Backdrop/Backdrop";
 import EditForm from "../Form/EditForm";
+import Toast from "../ToastNotification/ToastNotification";
 
 TimeAgo.addDefaultLocale(en);
 const timeAgo = new TimeAgo("en-US");
@@ -27,6 +28,8 @@ const CommentItem = (props) => {
     const [replyForm, setReplyForm] = useState(false);
     const [deleteOverlay, setDeleteOverlay] = useState(false);
     const [showEdit, setShowEdit] = useState(false);
+    const [replyIsInvalid, setInvalidReply] = useState(false);
+    const [notification, setNotification] = useState({});
     const {
         currentUser,
         replyToComment,
@@ -36,19 +39,54 @@ const CommentItem = (props) => {
         ratingDown,
     } = useContext(AppContext);
 
+    useEffect(() => {
+        if (!notification.show) {
+            return;
+        }
+        let timerId = setTimeout(() => {
+            setNotification({});
+        }, 3000);
+
+        return () => {
+            clearTimeout(timerId);
+        };
+    }, [notification]);
+
+    const hideNotificationHandler = () => {
+        console.log("hidding");
+        setNotification({});
+    };
+
     const replyHandler = () => {
         setReplyForm(props.userName);
     };
     const cancelReplyHandler = () => {
         setReplyForm(false);
+        setNotification({
+            show: true,
+            type: "cancel",
+            message: "Replying cancelled",
+        });
     };
 
     const addReplyHandler = (comment) => {
+        if (convertComment(comment.content).trim() === "") {
+            setInvalidReply(true);
+            return;
+        }
+
         replyToComment(props.id, {
             content: convertComment(comment.content),
             username: comment.username,
             image: comment.image,
             replyingTo: comment.replyingTo,
+        });
+        setInvalidReply(false);
+        setReplyForm(false);
+        setNotification({
+            show: true,
+            type: "successful",
+            message: "Comment addded successfully",
         });
     };
 
@@ -57,11 +95,17 @@ const CommentItem = (props) => {
     };
     const canceleDeleteHandler = () => {
         setDeleteOverlay(false);
+        setNotification({
+            show: true,
+            type: "cancel",
+            message: "Deleting cancelled",
+        });
     };
 
     const deleteCommentHandler = () => {
         deleteComment(props.id, props.commentId);
-        setDeleteOverlay(true);
+        props.onDelete();
+        setDeleteOverlay(false);
     };
 
     const showEditHandler = () => {
@@ -71,6 +115,11 @@ const CommentItem = (props) => {
     const editCommentHandler = (content) => {
         editComment(props.id, props.commentId, content);
         setShowEdit(false);
+        setNotification({
+            show: true,
+            type: "successful",
+            message: "Comment updated successfully",
+        });
     };
 
     const rateUpHandler = () => {
@@ -90,8 +139,7 @@ const CommentItem = (props) => {
                 {props.text}
             </Fragment>
         );
-    }
-    else {
+    } else {
         message = props.text;
     }
 
@@ -110,6 +158,34 @@ const CommentItem = (props) => {
                 />
             )}
             <div className={classes.comment}>
+                <div className={classes.body}>
+                    <div className={classes.header}>
+                        <a href={`#${props.userName}`}>
+                            <picture>
+                                <source type="image/webp" srcSet={props.image.webp} />
+                                <source type="image/png" srcSet={props.image.png} />
+                                <img src="/anonymous.png" alt={`${props.userName}'s avatar`} />
+                            </picture>
+                        </a>
+                        <div className={classes.title}>
+                            <a className={classes.username} href={`#${props.userName}`}>
+                                {props.userName}
+                            </a>
+                            {props.userName === currentUser.username && <span>you</span>}
+                            <div className={classes.timestamp}>
+                                {timeAgo.format(new Date(props.timestamp))}
+                            </div>
+                        </div>
+                    </div>
+                    {!showEdit && <p className={classes.content}>{message}</p>}
+                    {showEdit && (
+                        <EditForm
+                            content={props.text}
+                            onEdit={editCommentHandler}
+                            id={`edit-${props.id}`}
+                        />
+                    )}
+                </div>
                 <Rating
                     score={props.score}
                     className={classes.rating}
@@ -122,38 +198,32 @@ const CommentItem = (props) => {
                         (voter) => voter === currentUser.username
                     )}
                 />
-                <div className={classes.body}>
-                    <div className={classes.header}>
-                        <picture>
-                            <source type="image/webp" srcSet={props.image.webp} />
-                            <source type="image/png" srcSet={props.image.png} />
-                            <img src="/anonymous.png" alt="user Avatar" />
-                        </picture>
-                        <div className={classes.title}>
-                            <div className={classes.username}>{props.userName}</div>
-                            {props.userName === currentUser.username && <span>you</span>}
-                            <div className={classes.timestamp}>
-                                {timeAgo.format(new Date(props.timestamp))}
-                            </div>
-                        </div>
-                    </div>
-                    {!showEdit && <div className={classes.content}>{message}</div>}
-                    {showEdit && (
-                        <EditForm content={props.text} onEdit={editCommentHandler} />
-                    )}
-                </div>
                 {currentUser.username !== props.userName && (
-                    <Reply className={classes["reply-button"]} onClick={replyHandler} />
+                    <Reply
+                        className={classes["reply-button"]}
+                        onClick={replyHandler}
+                        ariaExpanded={replyForm ? true : false}
+                        ariaControls={`reply-${props.id}`}
+                    />
                 )}
                 {currentUser.username === props.userName && (
                     <div className={classes["reply-button"]}>
-                        <Delete onClick={showDeleteHandler} />
-                        <Edit onClick={showEditHandler} />
+                        <Delete
+                            onClick={showDeleteHandler}
+                            ariaExpanded={deleteOverlay}
+                            ariaControls={"delete-overlay"}
+                        />
+                        <Edit
+                            onClick={showEditHandler}
+                            ariaExpanded={showEdit}
+                            ariaControls={`edit-${props.id}`}
+                        />
                     </div>
                 )}
             </div>
             {replyForm && (
                 <NewCommentForm
+                    id={`reply-${props.id}`}
                     type="reply"
                     image={{
                         png: currentUser.image.png,
@@ -163,6 +233,7 @@ const CommentItem = (props) => {
                     value={"@" + replyForm + " "}
                     onSubmit={addReplyHandler}
                     onCancel={cancelReplyHandler}
+                    isInvalid={replyIsInvalid}
                     replyingTo={props.userName}
                 />
             )}
@@ -181,8 +252,16 @@ const CommentItem = (props) => {
                     replies={reply.replies}
                     votedUp={reply.votersUp || []}
                     votedDown={reply.votersDown || []}
+                    onDelete={props.onDelete}
                 />
             ))}
+            {notification.show && (
+                <Toast
+                    type={notification.type}
+                    message={notification.message}
+                    onClick={hideNotificationHandler}
+                />
+            )}
         </div>
     );
 };

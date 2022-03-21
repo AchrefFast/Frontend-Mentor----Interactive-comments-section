@@ -1,13 +1,39 @@
 import Head from "next/head";
-import { useState, Fragment, useContext } from "react";
+import { Fragment, useContext, useState, useEffect } from "react";
 import CommentItem from "../components/Comments/CommentItem.js";
 import NewCommentForm from "../components/Form/NewCommentForm.js";
 import AppContext from "../components/store/app-context.js";
+import Toast from "../components/ToastNotification/ToastNotification.js";
 import classes from "../styles/main.module.scss";
 
 export default function Home() {
   const appContext = useContext(AppContext);
   const { currentUser, comments, isLoading, error, addComment } = appContext;
+  const [notification, setNotification] = useState({});
+
+  useEffect(() => {
+    if (!notification.show) {
+      return;
+    }
+    let timerId = setTimeout(() => {
+      setNotification({});
+    }, 3000);
+
+    return () => {
+      clearTimeout(timerId);
+    };
+  }, [notification]);
+
+  const addNewCommentHandler = (comment) => {
+    addComment(comment);
+    setNotification({ show: true, type: 'successful', message: 'Comment added successfully' });
+  };
+  const hideNotificationHandler = () => {
+    setNotification({ show: true, type: 'cancel', message: 'Deleting cancelled' });
+  }
+  const deleteNotificationHandler = () => {
+    setNotification({ show: true, type: 'cancel', message: 'Comment deleted successfully' });
+  }
 
   let content = comments.map((comment) => (
     <CommentItem
@@ -25,6 +51,7 @@ export default function Home() {
       replies={comment.replies || []}
       votedUp={comment.votersUp || []}
       votedDown={comment.votersDown || []}
+      onDelete={deleteNotificationHandler}
     />
   ));
 
@@ -54,9 +81,10 @@ export default function Home() {
             webp: currentUser.image.png,
           }}
           placeholder="Add a comment..."
-          onSubmit={addComment}
+          onSubmit={addNewCommentHandler}
         />
       </main>
+      {notification.show && <Toast type={notification.type} message={notification.message} onClick={hideNotificationHandler} />}
     </Fragment>
   );
 }

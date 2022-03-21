@@ -12,6 +12,7 @@ const EditForm = (props) => {
         <form
             onSubmit={onUpdate}
             className={`${classes.form} ${props.className ? props.className : ""}`}
+            id={props.id}
         >
             <textarea ref={textRef} name="content" defaultValue={props.content} />
             <button type="submit">Update</button>

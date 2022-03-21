@@ -6,7 +6,6 @@ const NewCommentForm = (props) => {
     const [text, setText] = useState(props.value || "");
     const textRef = useRef();
     const { currentUser } = useContext(AppContext);
-
     const textChangeHandler = (event) => {
         setText(event.target.value);
     };
@@ -19,19 +18,24 @@ const NewCommentForm = (props) => {
             image: currentUser.image,
             replyingTo: props.replyingTo,
         });
-        setText("");
+
         if (props.type === "reply") {
-            props.onCancel();
+            // props.onCancel();
+            return;
         }
+        setText("");
     };
     return (
-        <form className={classes.form} onSubmit={submitHandler}>
+        <form className={classes.form} onSubmit={submitHandler} id={props.id}>
             <picture>
                 <source type="image/webp" srcSet={props.image.webp} />
                 <source type="image/png" srcSet={props.image.png} />
-                <img src="/anonymous.png" alt='user avatar' />
+                <img src="/anonymous.png" alt={`${currentUser.username}'s Avatar`} />
             </picture>
+            <label className={classes['sr-only']} htmlFor={`textarea-${props.id || 'new-comment'}`}>Add a new comment:</label>
             <textarea
+                className={props.isInvalid ? classes.isInvalid : ''}
+                htmlFor={`textarea-${props.id || 'new-comment'}`}
                 required={true}
                 ref={textRef}
                 name="content"

@@ -91,6 +91,14 @@
     font-weight: 500;
     margin: 0 0 0 15px;
     font-size: 0.9rem;
+    text-decoration: none;
+    color: color(dark-blue);
+
+    &:hover,
+    &:focus-visible,
+    &:active {
+      color: color(moderate-blue);
+    }
 
     @media (min-width: 660px) {
       font-size: 1rem;
