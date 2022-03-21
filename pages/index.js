@@ -32,7 +32,7 @@ export default function Home() {
     setNotification({ show: true, type: 'cancel', message: 'Deleting cancelled' });
   }
   const deleteNotificationHandler = () => {
-    setNotification({ show: true, type: 'cancel', message: 'Comment deleted successfully' });
+    setNotification({ show: true, type: 'successful', message: 'Comment deleted successfully' });
   }
 
   let content = comments.map((comment) => (
