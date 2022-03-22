@@ -30,21 +30,25 @@ const NewCommentForm = (props) => {
             <picture>
                 <source type="image/webp" srcSet={props.image.webp} />
                 <source type="image/png" srcSet={props.image.png} />
-                <img src="/anonymous.png" alt={`${currentUser.username}'s Avatar`} />
+                <img src="/anonymous.png" alt={`${currentUser.username}`} />
             </picture>
-            <label className={classes['sr-only']} htmlFor={`textarea-${props.id || 'new-comment'}`}>Add a new comment:</label>
-            <textarea
-                className={props.isInvalid ? classes.isInvalid : ''}
-                htmlFor={`textarea-${props.id || 'new-comment'}`}
-                required={true}
-                ref={textRef}
-                name="content"
-                rows="5"
-                readOnly={false}
-                placeholder={props.placeholder}
-                value={text}
-                onChange={textChangeHandler}
-            />
+            <div className={classes['text-block']}>
+                <label className={classes['sr-only']} htmlFor={`textarea-${props.id || 'new-comment'}`}>Add a new comment:</label>
+                <textarea
+                    className={props.isInvalid ? classes.isInvalid : ''}
+                    id={`textarea-${props.id || 'new-comment'}`}
+                    required={true}
+                    ref={textRef}
+                    name="content"
+                    rows="5"
+                    readOnly={false}
+                    placeholder={props.placeholder}
+                    value={text}
+                    onChange={textChangeHandler}
+                    aria-invalid={props.isInvalid}
+                />
+                <p aria-live="assertive" className={classes.error}>{props.isInvalid ? 'Please enter your comment' : ''}</p>
+            </div>
             <div>
                 <button type="submit">{props.type}</button>
                 {props.type === "reply" && (

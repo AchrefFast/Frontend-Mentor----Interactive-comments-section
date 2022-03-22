@@ -17,7 +17,7 @@ const Rating = (props) => {
             <button className={classes.plus} onClick={props.rateUp}>
                 &#43; <span className={classes['sr-only']}>upvote comment</span>
             </button>
-            <p className={classes.number} role='region' aria-live="polite"><span className={classes['sr-only']}>This comment's rating is </span>{props.score}</p>
+            <p className={classes.number} aria-live="polite"><span className={classes['sr-only']}>This comment's rating is </span>{props.score}</p>
             <button className={classes.minus} onClick={props.rateDown}>
                 &#8722; <span className={classes['sr-only']}>downvote comment</span>
             </button>

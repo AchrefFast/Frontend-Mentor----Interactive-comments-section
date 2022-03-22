@@ -29,7 +29,6 @@ const CommentItem = (props) => {
     const [deleteOverlay, setDeleteOverlay] = useState(false);
     const [showEdit, setShowEdit] = useState(false);
     const [replyIsInvalid, setInvalidReply] = useState(false);
-    const [notification, setNotification] = useState({});
     const {
         currentUser,
         replyToComment,
@@ -39,30 +38,14 @@ const CommentItem = (props) => {
         ratingDown,
     } = useContext(AppContext);
 
-    useEffect(() => {
-        if (!notification.show) {
-            return;
-        }
-        let timerId = setTimeout(() => {
-            setNotification({});
-        }, 3000);
-
-        return () => {
-            clearTimeout(timerId);
-        };
-    }, [notification]);
-
-    const hideNotificationHandler = () => {
-        console.log("hidding");
-        setNotification({});
-    };
 
     const replyHandler = () => {
         setReplyForm(props.userName);
     };
     const cancelReplyHandler = () => {
         setReplyForm(false);
-        setNotification({
+        setInvalidReply(false);
+        props.notification({
             show: true,
             type: "cancel",
             message: "Replying cancelled",
@@ -83,7 +66,7 @@ const CommentItem = (props) => {
         });
         setInvalidReply(false);
         setReplyForm(false);
-        setNotification({
+        props.notification({
             show: true,
             type: "successful",
             message: "Comment addded successfully",
@@ -95,7 +78,8 @@ const CommentItem = (props) => {
     };
     const canceleDeleteHandler = () => {
         setDeleteOverlay(false);
-        setNotification({
+        console.log('running');
+        props.notification({
             show: true,
             type: "cancel",
             message: "Deleting cancelled",
@@ -104,8 +88,12 @@ const CommentItem = (props) => {
 
     const deleteCommentHandler = () => {
         deleteComment(props.id, props.commentId);
-        props.onDelete();
         setDeleteOverlay(false);
+        props.notification({
+            show: true,
+            type: "successful",
+            message: "Comment deleted successfully",
+        });
     };
 
     const showEditHandler = () => {
@@ -115,7 +103,7 @@ const CommentItem = (props) => {
     const editCommentHandler = (content) => {
         editComment(props.id, props.commentId, content);
         setShowEdit(false);
-        setNotification({
+        props.notification({
             show: true,
             type: "successful",
             message: "Comment updated successfully",
@@ -164,7 +152,7 @@ const CommentItem = (props) => {
                             <picture>
                                 <source type="image/webp" srcSet={props.image.webp} />
                                 <source type="image/png" srcSet={props.image.png} />
-                                <img src="/anonymous.png" alt={`${props.userName}'s avatar`} />
+                                <img src="/anonymous.png" alt={`${props.userName}`} />
                             </picture>
                         </a>
                         <div className={classes.title}>
@@ -172,9 +160,9 @@ const CommentItem = (props) => {
                                 {props.userName}
                             </a>
                             {props.userName === currentUser.username && <span>you</span>}
-                            <div className={classes.timestamp}>
+                            <p className={classes.timestamp}>
                                 {timeAgo.format(new Date(props.timestamp))}
-                            </div>
+                            </p>
                         </div>
                     </div>
                     {!showEdit && <p className={classes.content}>{message}</p>}
@@ -252,16 +240,11 @@ const CommentItem = (props) => {
                     replies={reply.replies}
                     votedUp={reply.votersUp || []}
                     votedDown={reply.votersDown || []}
-                    onDelete={props.onDelete}
+                    notification={props.notification}
                 />
             ))}
-            {notification.show && (
-                <Toast
-                    type={notification.type}
-                    message={notification.message}
-                    onClick={hideNotificationHandler}
-                />
-            )}
+
+
         </div>
     );
 };

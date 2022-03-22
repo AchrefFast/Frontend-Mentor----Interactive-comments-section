@@ -6,7 +6,7 @@ import TrapFocus from '@mui/material/Unstable_TrapFocus';
 const Backdrop = (props) => {
     return (
         <TrapFocus open>
-            <div className={classes.container} tabIndex={-1} onClick={props.onCancel} id='delete-overlay'>
+            <div className={classes.container} tabIndex={-1} id='delete-overlay'>
                 <div className={classes.box}>
                     <h2>Delete Comment</h2>
                     <p>

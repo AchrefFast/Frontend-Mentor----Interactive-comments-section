@@ -9,7 +9,7 @@ import classes from "../styles/main.module.scss";
 export default function Home() {
   const appContext = useContext(AppContext);
   const { currentUser, comments, isLoading, error, addComment } = appContext;
-  const [notification, setNotification] = useState({});
+  const [notification, setNotification] = useState({ show: false });
 
   useEffect(() => {
     if (!notification.show) {
@@ -26,13 +26,20 @@ export default function Home() {
 
   const addNewCommentHandler = (comment) => {
     addComment(comment);
-    setNotification({ show: true, type: 'successful', message: 'Comment added successfully' });
+    setNotification({
+      show: true,
+      type: "successful",
+      message: "Comment added successfully",
+    });
   };
   const hideNotificationHandler = () => {
-    setNotification({ show: true, type: 'cancel', message: 'Deleting cancelled' });
-  }
-  const deleteNotificationHandler = () => {
-    setNotification({ show: true, type: 'successful', message: 'Comment deleted successfully' });
+    setNotification({
+      show: false,
+    });
+  };
+
+  const toastNotification = (data) => {
+    setNotification(data);
   }
 
   let content = comments.map((comment) => (
@@ -51,7 +58,7 @@ export default function Home() {
       replies={comment.replies || []}
       votedUp={comment.votersUp || []}
       votedDown={comment.votersDown || []}
-      onDelete={deleteNotificationHandler}
+      notification={toastNotification}
     />
   ));
 
@@ -84,7 +91,14 @@ export default function Home() {
           onSubmit={addNewCommentHandler}
         />
       </main>
-      {notification.show && <Toast type={notification.type} message={notification.message} onClick={hideNotificationHandler} />}
+
+      <Toast
+        type={notification.type}
+        message={notification.message}
+        onClick={hideNotificationHandler}
+        notify={notification.show}
+      />
+
     </Fragment>
   );
 }
